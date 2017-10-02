@@ -2,15 +2,15 @@
 /**
  * The ClockDisplay class implements a digital clock display for a
  * European-style 24 hour clock. The clock shows hours and minutes. The 
- * range of the clock is 00:00 (midnight) to 23:59 (one minute before 
+ * range of the clock is 12:00 A.M. (midnight) to 11:59 P.M. (one minute before 
  * midnight).
  * 
  * The clock display receives "ticks" (via the timeTick method) every minute
  * and reacts by incrementing the display. This is done in the usual clock
  * fashion: the hour increments when the minutes roll over to zero.
  * 
- * @author Michael Kölling and David J. Barnes
- * @version 2011.07.31
+ * @author Lucita Fortes
+ * @version 2017.10.01
  */
 public class ClockDisplay
 {
@@ -38,6 +38,7 @@ public class ClockDisplay
     {
         hours = new NumberDisplay(24);
         minutes = new NumberDisplay(60);
+        updateDisplay();
         setTime(hour, minute);
     }
 
@@ -60,9 +61,11 @@ public class ClockDisplay
      */
     public void setTime(int hour, int minute)
     {
+        if ((hour < 24) && (minute < 60)) {
         hours.setValue(hour);
         minutes.setValue(minute);
         updateDisplay();
+        }    
     }
 
     /**
@@ -78,7 +81,22 @@ public class ClockDisplay
      */
     private void updateDisplay()
     {
-        displayString = hours.getDisplayValue() + ":" + 
-                        minutes.getDisplayValue();
+        
+        if (hours.getValue() > 21) {
+            displayString = (hours.getValue() - 12) + ":" + 
+                            minutes.getDisplayValue() + " P.M.";
+        } else if (hours.getValue() > 12) {
+            displayString = "0" + (hours.getValue() - 12) + ":" + 
+                            minutes.getDisplayValue() + " P.M.";     
+        } else if (hours.getValue() == 12) {
+            displayString = hours.getValue() + ":" + 
+                            minutes.getDisplayValue() + " P.M.";
+        } else if (hours.getValue() > 0) {
+           displayString = hours.getDisplayValue() + ":" + 
+                        minutes.getDisplayValue() + " A.M.";
+        } else {
+           displayString = "12:" + 
+                        minutes.getDisplayValue() + " A.M.";
+        }
     }
 }
