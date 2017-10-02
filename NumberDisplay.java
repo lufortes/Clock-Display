@@ -19,10 +19,10 @@ public class NumberDisplay
      * Constructor for objects of class NumberDisplay.
      * Set the limit at which the display rolls over.
      */
-    public NumberDisplay(int rollOverLimit)
+    public NumberDisplay(int rollOverLimit, int initTime)
     {
         limit = rollOverLimit;
-        value = 0;
+        value = initTime;
     }
 
     /**
@@ -52,13 +52,24 @@ public class NumberDisplay
      * Set the value of the display to the new specified value. If the new
      * value is less than zero or over the limit, do nothing.
      */
+    public void setHourValue(int replacementValue)
+    {
+        if((replacementValue >= 0) && (replacementValue < limit + 1)) {
+            value = replacementValue;
+        }
+    }
+
+    /**
+     * Set the value of the display to the new specified value. If the new
+     * value is less than zero or over the limit, do nothing.
+     */
     public void setValue(int replacementValue)
     {
         if((replacementValue >= 0) && (replacementValue < limit)) {
             value = replacementValue;
         }
     }
-
+    
     /**
      * Increment the display value by one, rolling over to zero if the
      * limit is reached.

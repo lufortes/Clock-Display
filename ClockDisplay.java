@@ -1,16 +1,16 @@
 
 /**
  * The ClockDisplay class implements a digital clock display for a
- * European-style 24 hour clock. The clock shows hours and minutes. The 
- * range of the clock is 00:00 (midnight) to 23:59 (one minute before 
+ * 12 hour clock. The clock shows hours and minutes. The 
+ * range of the clock is 00:00 (midnight) to 11:59 (one minute before 
  * midnight).
  * 
  * The clock display receives "ticks" (via the timeTick method) every minute
  * and reacts by incrementing the display. This is done in the usual clock
  * fashion: the hour increments when the minutes roll over to zero.
  * 
- * @author Michael Kölling and David J. Barnes
- * @version 2011.07.31
+ * @author Lucita Fortes
+ * @version 2017.10.01
  */
 public class ClockDisplay
 {
@@ -20,12 +20,12 @@ public class ClockDisplay
     
     /**
      * Constructor for ClockDisplay objects. This constructor 
-     * creates a new clock set at 00:00.
+     * creates a new clock set at 12:00.
      */
     public ClockDisplay()
     {
-        hours = new NumberDisplay(24);
-        minutes = new NumberDisplay(60);
+        hours = new NumberDisplay(12,12);
+        minutes = new NumberDisplay(60,0);
         updateDisplay();
     }
 
@@ -36,9 +36,10 @@ public class ClockDisplay
      */
     public ClockDisplay(int hour, int minute)
     {
-        hours = new NumberDisplay(24);
-        minutes = new NumberDisplay(60);
-        setTime(hour, minute);
+        hours = new NumberDisplay(12,12);
+        minutes = new NumberDisplay(60,0);
+        updateDisplay();
+        setTime(hour, minute); 
     }
 
     /**
@@ -50,6 +51,9 @@ public class ClockDisplay
         minutes.increment();
         if(minutes.getValue() == 0) {  // it just rolled over!
             hours.increment();
+            if (hours.getValue() == 0) {
+                hours.setHourValue(12);
+            }
         }
         updateDisplay();
     }
@@ -60,9 +64,16 @@ public class ClockDisplay
      */
     public void setTime(int hour, int minute)
     {
-        hours.setValue(hour);
-        minutes.setValue(minute);
-        updateDisplay();
+        if ((hour <= 12) && (minute < 60)) 
+            {
+            hours.setHourValue(hour);
+            minutes.setValue(minute);
+            updateDisplay();
+            }
+        else if (hour > 12)
+            System.out.println("Hour should be <= 12");
+        else
+            System.out.println("Minutes should be < 60");   
     }
 
     /**
